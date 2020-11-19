@@ -148,6 +148,13 @@
 </head>
 
 <div id='map'></div>
+
+<svg>
+	<div id="logo">
+		<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+			<image x="1" y="50" href="Images\LogoLayout_v2.png" height="150" width="100" />
+	</div>
+</svg>
 	
 
 	<!-- Load Leaflet from CDN -->
@@ -177,7 +184,7 @@
 		}
 	}
 	
-	var map = L.map('map', options, locate_options);
+	var map = L.map('map', options);
 	
 	// add zoom control to top right window position
 	L.control.zoom({
@@ -254,14 +261,16 @@
 	}).addTo(map);
 	
 
-	// add tooltip to polygons
+// add tooltip to polygons
 closures.bindPopup(function (layer) {
 		return L.Util.template(`<b>Park Name:</b> ${layer.feature.properties.SITE_NAME} <br><b>Status:</b> ${layer.feature.properties.ClosStat} <br><b>Website:</b> ${layer.feature.properties.Links} `);
 	});
 
-	
-
-
+// fit bounds to extent of marin open space lands
+map.fitBounds([
+	[38.25361959, -122.40499723],
+	[37.8121417, -123.02878777]
+]);
 
 </script>
 
