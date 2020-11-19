@@ -177,23 +177,16 @@
 		}
 	}
 	
-	var map = L.map('map', options);
+	var map = L.map('map', options, locate_options);
 	
 	// add zoom control to top right window position
 	L.control.zoom({
 		position: 'topright'
 	}).addTo(map);
 
-	var basemap_url = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
- 
-	// Get basemap attributes from Leaflet Providers
-	var basemap_attributes = {
-	 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-	 subdomains: 'abcd',
-	 maxZoom: 19
-	};
+
 	// requests some map tiles
-	var tiles = L.tileLayer(basemap_url, basemap_attributes);
+	var tiles = L.tileLayer( 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community');
 	
 	// add those tiles to our map element
 	map.addLayer(tiles);
@@ -212,7 +205,7 @@
 	countyLayer.addTo(map);
 
 	// add viewLayer from AGOL
-	const closures = L.esri.featureLayer({url: 'https://services5.arcgis.com/tdQLEzq0fgVElWN3/arcgis/rest/services/MarinClosures_2020_ViewLayer/FeatureServer/0?token=LnMCOqvaoF4J59yY3FckdhlwQAZcqW56wUry4JkcHk26eNhSQ_WUh7TD7hYIQKJND_yKgPU8onMCyEk7UwnXAqgHvLPwN8zR-FekJ_5V03Kv5kXs8BRyP-4sFU1bkfIEeYl735UWS_RHBl8A0q_l_nuEx5OVGxiNU9yrrQZNaseMPjQbXUf_iSx4A7puiz7rKZEuYrJztPJv329yAJck6M96VCD-EUSKp_ZvF9QjxAM6OhdAxMMf7ZDGgGLZnBDN33bVCpSwFMfusV-hBKE4aQ..',
+	const closures = L.esri.featureLayer({url: 'https://services5.arcgis.com/tdQLEzq0fgVElWN3/arcgis/rest/services/MarinClosures_2020_ReadOnly/FeatureServer/0?token=mmcvTPhIxFbmgJC0TgwBoxuS-lv1dtQHhSaAYy2y3hXxoNxJKjMvWMXJHrNrek2idUKPoh95h76CnR79i8vH4XOExvw56zwfRxyWxJQP8QKd6Z8ArrtPnM-r831-nSMRtE9_HHAdZsyFCiuYPDQ7135Bza7qDhYIwdc41ywn4imFYSRmLtfCa6qa1bvnz-bPSCqQ2OUP9oyUjdnMm_FO10Nxeaeq5fFAzVGScv1ZIXrvsDhiX6AukKBNx9uSWrwPb8goCplmsCt4J_IlEua_Tw..' ,
 
 		// style feature based on propeties
 		style: function (feature) { 
@@ -220,22 +213,22 @@
 				return { color: 'false',
 				fillColor: '#00A12A',
 				opacity: false,
-				fillOpacity: false };	
+				fillOpacity: .6 };	
 			} else if (feature.properties.ClosStat == 'Closed') {
 				return { 	color: 'false',
 				fillColor: '#ed1c24',
 				opacity: false,
-				fillOpacity: false };	
+				fillOpacity: .6 };	
 			} else if (feature.properties.ClosStat == 'Open with parking and road restrictions') {
 				return { 	color: 'false',
 				fillColor: '#00ED3F',
 				opacity: false,
-				fillOpacity: false };	
+				fillOpacity: .6 };	
 			}	else if (feature.properties.ClosStat == 'Open to walk, bike and horse access only') {
 				return { 	color: 'false',
 				fillColor: '#ffde17',
 				opacity: false,
-				fillOpacity: false };	
+				fillOpacity: .6 };	
 			}
 			// loop through closure objects
 			for(let i = 0; i < closures.length; i++) {
