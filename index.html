@@ -230,32 +230,34 @@
 				opacity: false,
 				fillOpacity: .6 };	
 			}
-			// loop through closure objects
-			for(let i = 0; i < closures.length; i++) {
-				let props = closures[i].properties; // variable to access properties in closures
+	  },
 
-				// declare popup variable
-				let popup = `<h3>${closures[i].name}</h3>`
-
-
-				// if statement to determine popup contents
-				if (closures[i].properties.links) {
-					console.log("I have a web adress")
-
-					popup += `<p><b>website</b>: <a href='${props.links}'>${props.links}</a></p>`
-
-				} else {
-					console.log("have no url, exclude from popup");
-				}		
-			}		
-		}	
+	  	// use onEachFeatureMethod to highlight feature of interest 
+		onEachFeature: function (feature, layer) {
+			layer.on('mouseover', function () {
+				layer.setStyle({
+					stroke: true,
+					weight: 1.6,
+					color: '#000000',
+					opacity: false,
+					sticky: true
+				});
+			});
+			layer.on('mouseout', function () {
+				layer.setStyle({
+					color: 'false',
+					opacity: false,
+					fillOpacity: .6
+				});
+			});
+		}
 	}).addTo(map);
 	
 
-	// add popup to polygons
-//closures.bindPopup(function (layer) {
-	//	return L.Util.template(layer.feature.properties.ClosStat)
-	//});
+	// add tooltip to polygons
+closures.bindPopup(function (layer) {
+		return L.Util.template(`<b>Park Name:</b> ${layer.feature.properties.SITE_NAME} <br><b>Status:</b> ${layer.feature.properties.ClosStat} <br><b>Website:</b> ${layer.feature.properties.Links} `);
+	});
 
 	
 
