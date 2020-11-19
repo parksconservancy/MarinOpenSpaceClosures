@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset=utf-8 />
+	<title>Park and Open Space Closures in Marin County, California</title>
+	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+	<link rel='icon' href='https://newmapsplus.github.io/favicon.ico' type='image/x-icon' />
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+
+	<link href="https://fonts.googleapis.com/css?family=Quicksand:400,700" rel="stylesheet">
+
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: 'Quicksand', sans-serif;
+			font-size: 100%;
+			color: #3d3d3d;
+		}
+
+		h1 {
+			position: absolute;
+			margin-top: 0;
+			top: 10px;
+			left: 15px;
+			font-size: 1.5em;
+			font-family: 'Quicksand', sans-serif;
+			font-weight: 700;
+			letter-spacing: .04em;
+			padding: 10px 15px;
+			/* Add styles to match Leaflet UI elements */
+			background: rgba(256, 256, 256, .3);
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			z-index: 800;
+		}
+
+		h2 {
+			font-family: 'Quicksand', sans-serif;
+			font-size: 1.2em;
+			letter-spacing: .04em;
+
+		}
+
+		#map {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+		}
+
+		#about {
+			position: absolute;
+			bottom: 20px;
+			left: 15px;
+			width: 280px;
+			padding: 0 15px;
+			/* Add styles to match Leaflet UI elements */
+			background: rgba(256, 256, 256, .3);
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			z-index: 800;
+		}
+
+		p {
+			font-size: .9em;
+			line-height: 1.5em;
+		}
+
+		a {
+			color: #005daa;
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+		/* Leaflet popup styles */
+		.leaflet-popup-content {
+			font-family: 'Quicksand', sans-serif;
+			font-size: 1.1em;
+		}
+
+		/* 
+		When browser is 900px high or less
+		make the font a little smaller.
+		 */
+		@media screen and (max-height: 400px) {
+
+			#about p,
+			#about h2 {
+				font-size: .6em;
+			}
+
+			h1 {
+				font-size: 1.2em;
+			}
+
+			#about h2 {
+				font-size: 1em;
+			}
+
+			.leaflet-popup-content {
+				font-family: 'Quicksand', sans-serif;
+				font-size: 0.9em;
+			}
+		}
+
+		/* 
+			When browser is 900px high or less make the font a little smaller.
+			*/
+			@media screen and (max-height: 400px) {
+
+				#about p,
+				#about h2 {
+				font-size: .6em;
+				}
+			
+				h1 {
+				font-size: 1.2em;
+				}
+			
+				#about h2 {
+				font-size: 1em;
+				}
+			
+				.leaflet-popup-content {
+				font-family: 'Quicksand', sans-serif;
+				font-size: 0.9em;
+				}
+			}
+			
+			/* Don't display info block when window is very small */
+			@media screen and (max-height: 200px) {
+			
+				#about {
+				display: none;
+				}
+			}
+	</style>
+</head>
+
+<div id='map'></div>
+	
+
+	<!-- Load Leaflet from CDN -->
+	<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+	<!-- Load Esri Leaflet from CDN - MUST COME AFTER LEAFLET IS LOADED - SEQUENCE MATTER -->
+	<script src="https://unpkg.com/esri-leaflet@2.5.1/dist/esri-leaflet.js"
+	integrity="sha512-q7X96AASUF0hol5Ih7AeZpRF6smJS55lcvy+GLWzJfZN+31/BQ8cgNx2FGF+IQSA4z2jHwB20vml+drmooqzzQ=="
+	crossorigin=""></script>
+	<script src="GeoJsons/MarinBnd.js"></script>
+	
+
+	<script>
+		// options to be used when creating the map
+		var options = {
+		center: [38.0828, -122.7551],
+		zoom:10.4,
+		zoomSnap: .1,
+		zoomControl: false
+	}
+
+
+	// options for the geolocation control
+	var locate_options = {
+		position: 'topright',
+		strings: {
+		title: "Show me where I am, yo!"
+		}
+	}
+	
+	var map = L.map('map', options);
+	
+	// add zoom control to top right window position
+	L.control.zoom({
+		position: 'topright'
+	}).addTo(map);
+
+	var basemap_url = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+ 
+	// Get basemap attributes from Leaflet Providers
+	var basemap_attributes = {
+	 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+	 subdomains: 'abcd',
+	 maxZoom: 19
+	};
+	// requests some map tiles
+	var tiles = L.tileLayer(basemap_url, basemap_attributes);
+	
+	// add those tiles to our map element
+	map.addLayer(tiles);
+
+	const countyLayer = L.geoJson(county, {
+		style: function (feature) {
+			return {
+				color: '#000000', // White
+				// Make line weight larger than the county outline
+				weight: .5,
+				fillOpacity: 0.1,
+				fillColor: '#CCCCCC'
+			};
+		}
+	});
+	countyLayer.addTo(map);
+
+	// add viewLayer from AGOL
+	const closures = L.esri.featureLayer({url: 'https://services5.arcgis.com/tdQLEzq0fgVElWN3/arcgis/rest/services/MarinClosures_2020_ViewLayer/FeatureServer/0?token=LnMCOqvaoF4J59yY3FckdhlwQAZcqW56wUry4JkcHk26eNhSQ_WUh7TD7hYIQKJND_yKgPU8onMCyEk7UwnXAqgHvLPwN8zR-FekJ_5V03Kv5kXs8BRyP-4sFU1bkfIEeYl735UWS_RHBl8A0q_l_nuEx5OVGxiNU9yrrQZNaseMPjQbXUf_iSx4A7puiz7rKZEuYrJztPJv329yAJck6M96VCD-EUSKp_ZvF9QjxAM6OhdAxMMf7ZDGgGLZnBDN33bVCpSwFMfusV-hBKE4aQ..',
+
+		// style feature based on propeties
+		style: function (feature) { 
+      if (feature.properties.ClosStat == 'Open') {
+				return { color: 'false',
+				fillColor: '#00A12A',
+				opacity: false,
+				fillOpacity: false };	
+			} else if (feature.properties.ClosStat == 'Closed') {
+				return { 	color: 'false',
+				fillColor: '#ed1c24',
+				opacity: false,
+				fillOpacity: false };	
+			} else if (feature.properties.ClosStat == 'Open with parking and road restrictions') {
+				return { 	color: 'false',
+				fillColor: '#00ED3F',
+				opacity: false,
+				fillOpacity: false };	
+			}	else if (feature.properties.ClosStat == 'Open to walk, bike and horse access only') {
+				return { 	color: 'false',
+				fillColor: '#ffde17',
+				opacity: false,
+				fillOpacity: false };	
+			}
+			// loop through closure objects
+			for(let i = 0; i < closures.length; i++) {
+				let props = closures[i].properties; // variable to access properties in closures
+
+				// declare popup variable
+				let popup = `<h3>${closures[i].name}</h3>`
+
+
+				// if statement to determine popup contents
+				if (closures[i].properties.links) {
+					console.log("I have a web adress")
+
+					popup += `<p><b>website</b>: <a href='${props.links}'>${props.links}</a></p>`
+
+				} else {
+					console.log("have no url, exclude from popup");
+				}		
+			}		
+		}	
+	}).addTo(map);
+	
+
+	// add popup to polygons
+//closures.bindPopup(function (layer) {
+	//	return L.Util.template(layer.feature.properties.ClosStat)
+	//});
+
+	
+
+
+
+</script>
+
+</body>
+
+</html>
