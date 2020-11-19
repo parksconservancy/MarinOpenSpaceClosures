@@ -14,37 +14,18 @@
 	<link href="https://fonts.googleapis.com/css?family=Quicksand:400,700" rel="stylesheet">
 
 	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			font-family: 'Quicksand', sans-serif;
-			font-size: 100%;
-			color: #3d3d3d;
+		@font-face {
+			font-family: 'verlag';
+			src: url(Fonts/VerlagBold.otf);
+			font-style: normal;
+			font-weight: 100
 		}
 
-		h1 {
-			position: absolute;
-			margin-top: 0;
-			top: 10px;
-			left: 15px;
-			font-size: 1.5em;
-			font-family: 'Quicksand', sans-serif;
-			font-weight: 700;
-			letter-spacing: .04em;
-			padding: 10px 15px;
-			/* Add styles to match Leaflet UI elements */
-			background: rgba(256, 256, 256, .3);
-			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-			border: 1px solid #ddd;
-			border-radius: 5px;
-			z-index: 800;
-		}
-
-		h2 {
-			font-family: 'Quicksand', sans-serif;
-			font-size: 1.2em;
-			letter-spacing: .04em;
-
+		@font-face {
+			font-family: 'fairplex';
+			src: url(Fonts\FairplexWideOT.otf);
+			font-style: normal;
+			font-weight: 100;
 		}
 
 		#map {
@@ -52,102 +33,122 @@
 			top: 0;
 			bottom: 0;
 			width: 100%;
+			background: #ddd;
+			/* with transparency */
 		}
 
 		#about {
 			position: absolute;
-			bottom: 20px;
-			left: 15px;
-			width: 280px;
-			padding: 0 15px;
+			top: 10px;
+			right: 10px;
+			height: 160px;
+			width: 250px;
+			padding: 15px 15px;
+			margin: 0;
 			/* Add styles to match Leaflet UI elements */
-			background: rgba(256, 256, 256, .3);
+			background: rgba(256, 256, 256, .8);
 			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 			border: 1px solid #ddd;
 			border-radius: 5px;
 			z-index: 800;
 		}
 
+		#logo {
+
+			position: absolute;
+			bottom: 10px;
+			left: 0px;
+			height: 300;
+			width: 280px;
+			padding: 15px 15px;
+			margin: 0;
+			/* Add styles to match Leaflet UI elements */
+			background: rgba(256, 256, 256, 0);
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0);
+			border: 0px solid #ddd;
+			border-radius: 5px;
+			z-index: 800;
+		}
+
 		p {
+			font-family: 'verlag';
+			font-size: .8em;
+			color: #001323;
+		}
+
+		h5 {
+			font-family: 'fairplex';
 			font-size: .9em;
-			line-height: 1.5em;
 		}
 
-		a {
-			color: #005daa;
-			text-decoration: none;
-		}
+		/* Don't display info block when window is very small */
+		@media screen and (max-height: 500px) {
 
-		a:hover {
-			text-decoration: underline;
-		}
-
-		/* Leaflet popup styles */
-		.leaflet-popup-content {
-			font-family: 'Quicksand', sans-serif;
-			font-size: 1.1em;
-		}
-
-		/* 
-		When browser is 900px high or less
-		make the font a little smaller.
-		 */
-		@media screen and (max-height: 400px) {
-
-			#about p,
-			#about h2 {
-				font-size: .6em;
-			}
-
-			h1 {
-				font-size: 1.2em;
-			}
-
-			#about h2 {
-				font-size: 1em;
-			}
-
-			.leaflet-popup-content {
-				font-family: 'Quicksand', sans-serif;
-				font-size: 0.9em;
-			}
-		}
-
-		/* 
-			When browser is 900px high or less make the font a little smaller.
-			*/
-			@media screen and (max-height: 400px) {
-
-				#about p,
-				#about h2 {
-				font-size: .6em;
-				}
-			
-				h1 {
-				font-size: 1.2em;
-				}
-			
-				#about h2 {
-				font-size: 1em;
-				}
-			
-				.leaflet-popup-content {
-				font-family: 'Quicksand', sans-serif;
-				font-size: 0.9em;
-				}
-			}
-			
-			/* Don't display info block when window is very small */
-			@media screen and (max-height: 200px) {
-			
-				#about {
+			#about {
 				display: none;
-				}
 			}
+
+			#legend {
+				display: none;
+			}
+
+			#logo {
+				display: none;
 	</style>
+
 </head>
 
-<div id='map'></div>
+<body>
+
+	<div id='map'></div>
+
+	<section>
+		<div class="row">
+			<div id="map"></div>
+
+		</div>
+
+		<section>
+			<div class="row">
+				<div id="map"></div>
+
+			</div>
+
+			<section id="about">
+
+				<div id="legend">
+
+					<svg height="320" width="100%">
+						<!-- legend heading -->
+						<text x="10" y="15" style="font-family: 'verlag';font-size: 1.1em; font-weight: bold;">Park Status -
+							Click area to view</text>
+						<!-- ca state parks legend element -->
+						<rect x="10" y="30" width="30" height="20" style="fill: #00A12A" />
+						<text x="48" y="45" style="font-size: 12px; font-family: 'fairplex';">Open</text>
+						<!-- mmwd legend element -->
+						<rect x="10" y="60" width="30" height="20" style="fill: #00ED3F" />
+						<text x="48" y="75" style="font-size: 12px; font-family: 'fairplex';">Open with parking and road
+							restrictions</text>
+						<!-- marin county parks legend element -->
+						<rect x="10" y="90" width="30" height="20" style="fill: #ffde17" />
+						<text x="48" y="105" style="font-size: 12px; font-family: 'fairplex';">Open to walk, bike, and horse access
+							only</text>
+						<!-- nps lands legend element -->
+						<rect x="10" y="120" width="30" height="20" style="fill: #ed1c24" />
+						<text x="48" y="135" style="font-size: 12px; font-family: 'fairplex';">Closed</text>
+						<text x="14" y="164" style="font-size: 12px; font-family: 'verlag';">Map updated 11/19/2020</text>
+					</svg>
+				</div>
+			</section>
+
+			<svg>
+				<div id="logo">
+					<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<image x="1" y="50" href="Images\LogoLayout_v2.png" height="150" width="100" />
+				</div>
+			</svg>
+
+		</section>
 
 <svg>
 	<div id="logo">
