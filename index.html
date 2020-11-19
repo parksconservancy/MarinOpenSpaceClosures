@@ -171,9 +171,9 @@
 		// options to be used when creating the map
 		var options = {
 		center: [38.0828, -122.7551],
-		zoom:10.4,
+		zoom: 10.4,
 		zoomSnap: .1,
-		zoomControl: false
+		zoomControl: true
 	}
 
 
@@ -187,13 +187,7 @@
 	
 	var map = L.map('map', options);
 	
-	// add zoom control to top right window position
-	L.control.zoom({
-		position: 'topright'
-	}).addTo(map);
-
-
-	// requests some map tiles
+		// requests some map tiles
 	var tiles = L.tileLayer( 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community');
 	
 	// add those tiles to our map element
@@ -262,8 +256,8 @@
 	}).addTo(map);
 	
 
-// add tooltip to polygons
-closures.bindPopup(function (layer) {
+	// add tooltip to polygons
+	closures.bindPopup(function (layer) {
 		return L.Util.template(`<b>Park Name:</b> ${layer.feature.properties.SITE_NAME} <br><b>Status:</b> ${layer.feature.properties.ClosStat} <br><b>Website:</b> ${layer.feature.properties.Links} `);
 	});
 
