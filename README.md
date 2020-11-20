@@ -1,2 +1,2 @@
 # Marin Open Space Closures
-Web map that allows partners to update AGOL features layer via domains and have the result reflected in Leaflet map for easier on the fly updating.
+Web map that allows One Tam partners to update a single ArcGIS Online feature layer as needed for closures of any type. Map uses Leaflet API with Esri plugin to consume a feature layer that converts the layer to a GeoJson. The feature layer is a reference to a master feature layer of closures that has editable attributes. One Tam partners are members of the Park Closures group. Map can now updated as needed by partner agencies.
