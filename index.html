@@ -206,9 +206,9 @@
 	countyLayer.addTo(map);
 
 	// add viewLayer from AGOL
-	const closures = L.esri.featureLayer({url: 'https://services5.arcgis.com/tdQLEzq0fgVElWN3/arcgis/rest/services/MarinClosures_2020_ReadOnly/FeatureServer/0?token=mmcvTPhIxFbmgJC0TgwBoxuS-lv1dtQHhSaAYy2y3hXxoNxJKjMvWMXJHrNrek2idUKPoh95h76CnR79i8vH4XOExvw56zwfRxyWxJQP8QKd6Z8ArrtPnM-r831-nSMRtE9_HHAdZsyFCiuYPDQ7135Bza7qDhYIwdc41ywn4imFYSRmLtfCa6qa1bvnz-bPSCqQ2OUP9oyUjdnMm_FO10Nxeaeq5fFAzVGScv1ZIXrvsDhiX6AukKBNx9uSWrwPb8goCplmsCt4J_IlEua_Tw..' ,
+	const closures = L.esri.featureLayer({url: 'https://services5.arcgis.com/tdQLEzq0fgVElWN3/arcgis/rest/services/MarinClosures_2020_ReadOnly/FeatureServer/0' ,
 
-		// style feature based on propeties
+		// style feature based on properties
 		style: function (feature) { 
       if (feature.properties.ClosStat == 'Open') {
 				return { color: 'false',
